@@ -1,0 +1,4 @@
+* Atlas
+
+The personal kanban/gtd and stat-tracking system.
+
