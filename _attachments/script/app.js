@@ -17,6 +17,19 @@ $(function() {
         return o;
     };
 
+    function createUUID() {
+        // based off of
+        // http://www.ietf.org/rfc/rfc4122.txt
+        // but makes couchDB UUIDs
+        // instead of rfc 4122 UUIDs
+        var s = [];
+        var hexDigits = "0123456789abcdef";
+        for (var i = 0; i < 36; i++) {
+            s[i] = hexDigits.substr(Math.floor(Math.random() * 0x10), 1);
+        }
+        return s.join("");
+    }
+
     var path = unescape(document.location.pathname).split('/');
     var design = path[3];
     var db = $.couch.db(path[1]);
@@ -27,7 +40,7 @@ $(function() {
 
         var form = this;
         var doc = $(form).serializeObject();
-        delete doc._id;
+        doc._id = createUUID();
         delete doc._rev;
 
         db.saveDoc( doc, {success: function(status) {

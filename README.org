@@ -21,19 +21,20 @@ is assumed to have one implicit action.
 
 ** Basic Task creation
 *** Build a form for a task
+    CLOCK: [2014-12-29 Mon 16:43]
     CLOCK: [2014-12-28 Sun 18:30]--[2014-12-28 Sun 19:13] =>  0:43
     CLOCK: [2014-12-28 Sun 18:28]--[2014-12-28 Sun 18:30] =>  0:02
 1h
 
-*** Write the css for a form
+*** Write the css for a task
 .25h
 
 ** Get Kanban columns working
 *** Create some views for the columns, see about keeping it DRY
+    CLOCK: [2014-12-28 Sun 20:01]--[2014-12-28 Sun 20:14] =>  0:13
 2h
 
-*** 
-
+*** Add in drag'n'drop support
 
 ** Make login required / Figure out database security
 1.5h
