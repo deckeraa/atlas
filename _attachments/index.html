@@ -11,13 +11,31 @@
 
     <div id="profile">
     </div>
-    <div id="content"></div>
-
-    <div id="sidebar">
-      <p>Edit welcome message.</p>
-      <p>Ideas: You could easily turn this into a photo sharing app, 
-          or a grocery list, or a chat room. <a href="https://github.com/couchapp/example">Code for this app is on Github.</a></p>
+    <div id="content">
+    <form id="new-task">
+      <legend>New Task</legend>
+      <table>
+        <input name="_id"  style="display:none;"/>
+        <input name="_rev" style="display:none;"/>
+        <tr>
+          <td><label for="task">Task</label></td>
+          <td><input name="task" type="text" /></td>
+        </tr>
+        <tr>
+          <td><label for="due">Due</label></td>
+          <td><input name="due" type="date" /></td>
+        </tr>
+        <tr>
+          <td><label for="actions">Actions</label></td>
+          <td><textarea name="actions"></textarea></td>
+        </tr>
+        <tr>
+          <td><input type="submit" /></td>
+        </tr>
+      </table>
+    </form>
     </div>
+
   </body>
   <script src="/_utils/script/sha1.js"></script>
   <script src="/_utils/script/json2.js"></script>

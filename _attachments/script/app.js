@@ -17,9 +17,25 @@ $(function() {
         return o;
     };
 
-    var path = unescape(document.location.pathname).split('/'),
-        design = path[3],
-        db = $.couch.db(path[1]);
+    var path = unescape(document.location.pathname).split('/');
+    var design = path[3];
+    var db = $.couch.db(path[1]);
+
+    // New Task Form
+    $("#new-task").submit( function (e) {
+        e.preventDefault();
+
+        var form = this;
+        var doc = $(form).serializeObject();
+        delete doc._id;
+        delete doc._rev;
+
+        db.saveDoc( doc, {success: function(status) {
+            form.reset();
+        }});
+        return false;
+    });
+
     function drawItems() {
         db.view(design + "/recent-items", {
             descending : "true",
@@ -34,7 +50,7 @@ $(function() {
             }
         });
     };
-    drawItems();
+//    drawItems();
     var changesRunning = false;
     function setupChanges(since) {
         if (!changesRunning) {

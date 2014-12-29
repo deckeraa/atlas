@@ -2,3 +2,48 @@
 
 The personal kanban/gtd and stat-tracking system.
 
+** Kanban columns
+Backlog
+Doing
+Q/A
+Done
+
+Tag Bar holds tags that show color based on how close to goal.
+
+Project => Task  => Actions
+The cards represent tasks
+The tags represent projects
+
+Tasks need not have an action; if none is present then the task
+is assumed to have one implicit action.
+
+* Minimum Viable Product
+
+** Basic Task creation
+*** Build a form for a task
+    CLOCK: [2014-12-28 Sun 18:30]--[2014-12-28 Sun 19:13] =>  0:43
+    CLOCK: [2014-12-28 Sun 18:28]--[2014-12-28 Sun 18:30] =>  0:02
+1h
+
+*** Write the css for a form
+.25h
+
+** Get Kanban columns working
+*** Create some views for the columns, see about keeping it DRY
+2h
+
+*** 
+
+
+** Make login required / Figure out database security
+1.5h
+
+* Extras
+
+** Encryption
+
+
+
+
+
+
