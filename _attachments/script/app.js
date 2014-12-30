@@ -1,3 +1,69 @@
+// Atlas
+// Personal Kanban/GTD/Analytics
+
+// -------------------- app globals --------------------
+
+// The database object -- will be initialized on jQuery load
+var db;
+
+// The kanban columns
+var cols_bf = ["backlog","doing","qa", "done"]; // back-facing
+var cols_ff = ["Backlog","Doing","Q/A","Done"]; // front-facing
+
+function createUUID() {
+    // based off of
+    // http://www.ietf.org/rfc/rfc4122.txt
+    // but makes couchDB UUIDs
+    // instead of rfc 4122 UUIDs
+    var s = [];
+    var hexDigits = "0123456789abcdef";
+    for (var i = 0; i < 36; i++) {
+        s[i] = hexDigits.substr(Math.floor(Math.random() * 0x10), 1);
+    }
+    return s.join("");
+}
+
+function getNextColumn( colname_bf ) {
+    var index = cols_bf.indexOf(colname_bf);
+    if( index + 1 < cols_bf.length ) {
+        return cols_bf[ index + 1 ];
+    }
+    return null;
+}
+
+function getPrevColumn( colname_bf ) {
+    var index = cols_bf.indexOf(colname_bf);
+    if( index - 1 >= 0 ) {
+        return cols_bf[ index-1 ];
+    }
+    return null;
+}
+
+// TODO add in error checking
+function moveTaskToNextColumn( task_id ) {
+    db.openDoc( task_id, {
+        success: function(doc) {
+            var next = getNextColumn( doc.column )
+            if( next ) {
+                doc.column = next;
+                db.saveDoc(doc);
+            }
+        }
+    });
+}
+
+function moveTaskToPrevColumn( task_id ) {
+    db.openDoc( task_id, {
+        success: function(doc) {
+            var prev = getPrevColumn( doc.column )
+            if( prev ) {
+                doc.column = prev;
+                db.saveDoc(doc);
+            }
+        }
+    });
+}
+
 $(function() {   
     // friendly helper http://tinyurl.com/6aow6yn
     $.fn.serializeObject = function() {
@@ -16,22 +82,11 @@ $(function() {
         return o;
     };
 
-    function createUUID() {
-        // based off of
-        // http://www.ietf.org/rfc/rfc4122.txt
-        // but makes couchDB UUIDs
-        // instead of rfc 4122 UUIDs
-        var s = [];
-        var hexDigits = "0123456789abcdef";
-        for (var i = 0; i < 36; i++) {
-            s[i] = hexDigits.substr(Math.floor(Math.random() * 0x10), 1);
-        }
-        return s.join("");
-    }
+
 
     var path = unescape(document.location.pathname).split('/');
     var design = path[3];
-    var db = $.couch.db(path[1]);
+    db = $.couch.db(path[1]);
 
     // set up handlebars helpers
     Handlebars.registerHelper('render-task', function(task) {
@@ -88,23 +143,7 @@ $(function() {
 
     }
 
-    var cols_bf = ["backlog","doing","qa", "done"]; // back-facing
-    var cols_ff = ["Backlog","Doing","Q/A","Done"]; // front-facing
 
-    function getNextColumn( colname_bf ) {
-        var index = cols_bf.indexOf(colname_bf);
-        if( index + 1 < cols_bf.length ) {
-            return cols_bf[ index + 1 ];
-        }
-        return null;
-    }
-    function getPrevColumn( colname_bf ) {
-        var index = cols_bf.indexOf(colname_bf);
-        if( index - 1 >= 0 ) {
-            return cols_bf[ index-1 ];
-        }
-        return null;
-    }
 
     for( var i in cols_bf ) {
         buildKanbanColumn( cols_bf[i], cols_ff[i] );
