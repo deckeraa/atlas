@@ -48,6 +48,7 @@ $(function() {
         var doc = $(form).serializeObject();
         doc._id = createUUID();
         delete doc._rev;
+        doc.column = "backlog";
 
         db.saveDoc( doc, {success: function(status) {
             form.reset();
@@ -55,7 +56,7 @@ $(function() {
         return false;
     });
 
-    function drawItems() {
+/*    function drawItems() {
         db.view(design + "/recent-items", {
             descending : "true",
             limit : 50,
@@ -68,46 +69,46 @@ $(function() {
                 $("#content").html(them);
             }
         });
-    };
+    };*/
 
-    function buildKanbanColumn() {
-        db.view(design + "/tasks-backlog", {
+    // colname is the name of the corresponding view
+    // col_title is what gets displayed to the user
+    // example: buildKanbanColumn("backlog", "Backlog");
+    function buildKanbanColumn(colname, col_title) {
+        db.view(design + "/tasks-" + colname, {
             success : function (data) {
                 console.log(data);
-//                var col = $.mustache($("#kanban-column").html(), data, {"render-task": $("#render-task").html});
-                data.col_name = "Backlog";
+                data.col_name = col_title;
                 var template = Handlebars.compile( $("#kanban-column").html() );
                 
-                $("#backlog-div").html( template(data) );
+                $("#" + colname + "-div").html( template(data) );
             }
         });
 
     }
-    buildKanbanColumn();
-//    drawItems();
+
+    buildKanbanColumn("backlog", "Backlog");
+    buildKanbanColumn("doing", "Doing");
+    buildKanbanColumn("qa", "Q/A");
+    buildKanbanColumn("done", "Done");
+
     var changesRunning = false;
-    function setupChanges(since) {
+    function setupChanges(since, onChangeFn) {
         if (!changesRunning) {
             var changeHandler = db.changes(since);
             changesRunning = true;
-            changeHandler.onChange(drawItems);
+            changeHandler.onChange( onChangeFn );
         }
     }
-    $.couchProfile.templates.profileReady = $("#new-message").html();
+//    $.couchProfile.templates.profileReady = $("#new-message").html();
     $("#account").couchLogin({
         loggedIn : function(r) {
-            $("#profile").couchProfile(r, {
-                profileReady : function(profile) {
-                    $("#create-message").submit(function(e){
-                        e.preventDefault();
-                        var form = this, doc = $(form).serializeObject();
-                        doc.created_at = new Date();
-                        doc.profile = profile;
-                        db.saveDoc(doc, {success : function() {form.reset();}});
-                        return false;
-                    }).find("input").focus();
-                }
-            });
+            console.log(r);
+            $("#profile").html("Logged in as: " + r.userCtx.name);
+            // $("#profile").couchProfile(r, {
+            //     profileReady : function(profile) {
+            //     }
+            // });
         },
         loggedOut : function() {
             $("#profile").html('<p>Please log in to see your profile.</p>');

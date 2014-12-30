@@ -72,10 +72,18 @@ ul {
   list-style: none;
 }
 
+#kanban-board {
+    background-color: lightyellow;
+    border: 1px solid black;
+    margin: 10px 5px 10px 5px;
+}
+
 .kanban-column {
+    display: inline-block;
     background-color: lightblue;
     border: 1px solid black;
     margin: 10px 10px 10px 10px;
+    width: 20%; /* this needs to become un-hardcoded in the future */
 }
 
 .task {
