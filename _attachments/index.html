@@ -68,11 +68,11 @@
 
   <script id="kanban-column" type="text/x-mustache" charset="utf-8">
    <h1>{{ col_name }}</h1>
-   <ul>
+
    {{#rows}}
-   <li>{{render-task value}}</li>
+   {{render-task value}}
    {{/rows}}
-   </ul>
+
   </script>
 
   <script id="new-message" type="text/x-mustache" charset="utf-8">

@@ -75,9 +75,11 @@ $(function() {
     // col_title is what gets displayed to the user
     // example: buildKanbanColumn("backlog", "Backlog");
     function buildKanbanColumn(colname, col_title) {
+        var this_fn = function(){ buildKanbanColumn(colname,col_title); }; // used for setupChanges
         db.view(design + "/tasks-" + colname, {
+            update_seq: true,
             success : function (data) {
-                console.log(data);
+                setupChanges(data.update_seq, this_fn);
                 data.col_name = col_title;
                 var template = Handlebars.compile( $("#kanban-column").html() );
                 
@@ -87,10 +89,32 @@ $(function() {
 
     }
 
-    buildKanbanColumn("backlog", "Backlog");
+    var cols_bf = ["backlog","doing","qa", "done"]; // back-facing
+    var cols_ff = ["Backlog","Doing","Q/A","done"]; // front-facing
+
+    function getNextColumn( colname_bf ) {
+        var index = cols_bf.indexOf(colname_bf);
+        if( index + 1 < cols_bf.length ) {
+            return cols_bf[ index + 1 ];
+        }
+        return null;
+    }
+    function getPrevColumn( colname_bf ) {
+        var index = cols_bf.indexOf(colname_bf);
+        if( index - 1 >= 0 ) {
+            return cols_bf[ index-1 ];
+        }
+        return null;
+    }
+
+    for( var i in cols_bf ) {
+        buildKanbanColumn( cols_bf[i], cols_ff[i] );
+    }
+
+/*    buildKanbanColumn("backlog", "Backlog");
     buildKanbanColumn("doing", "Doing");
     buildKanbanColumn("qa", "Q/A");
-    buildKanbanColumn("done", "Done");
+    buildKanbanColumn("done", "Done");*/
 
     var changesRunning = false;
     function setupChanges(since, onChangeFn) {
