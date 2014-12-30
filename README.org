@@ -21,7 +21,7 @@ is assumed to have one implicit action.
 
 ** Basic Task creation
 *** Build a form for a task
-    CLOCK: [2014-12-29 Mon 16:43]
+    CLOCK: [2014-12-29 Mon 16:43]--[2014-12-29 Mon 16:59] =>  0:16
     CLOCK: [2014-12-28 Sun 18:30]--[2014-12-28 Sun 19:13] =>  0:43
     CLOCK: [2014-12-28 Sun 18:28]--[2014-12-28 Sun 18:30] =>  0:02
 1h
@@ -31,8 +31,16 @@ is assumed to have one implicit action.
 
 ** Get Kanban columns working
 *** Create some views for the columns, see about keeping it DRY
+    CLOCK: [2014-12-29 Mon 20:54]--[2014-12-29 Mon 21:20] =>  0:26
+    CLOCK: [2014-12-29 Mon 19:20]--[2014-12-29 Mon 19:28] =>  0:08
+    CLOCK: [2014-12-29 Mon 18:53]--[2014-12-29 Mon 19:09] =>  0:16
+    CLOCK: [2014-12-29 Mon 17:00]--[2014-12-29 Mon 17:30] =>  0:30
     CLOCK: [2014-12-28 Sun 20:01]--[2014-12-28 Sun 20:14] =>  0:13
 2h
+
+Looks like I might have to change my html templating solution
+away from mustache.js. I'm getting the feeling that it is not
+powerful enough for what I want to do.
 
 *** Add in drag'n'drop support
 

@@ -24,7 +24,6 @@ h1 {
   background:#eef;
   padding:8px;
   width:60%;
-  float:left;
 }
 
 #sidebar {
@@ -71,4 +70,23 @@ div.avatar img {
 
 ul {
   list-style: none;
+}
+
+.kanban-column {
+    background-color: lightblue;
+    border: 1px solid black;
+    margin: 10px 10px 10px 10px;
+}
+
+.task {
+    background-color: lightgray;
+    border: 1px solid black;
+    width: 160px;
+    overflow: auto;
+    margin: 15px 0px 0px 10px;
+}
+
+.task h1 {
+    font-size: 1em;
+    overflow:hidden
 }

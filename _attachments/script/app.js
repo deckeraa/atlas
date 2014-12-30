@@ -34,6 +34,12 @@ $(function() {
     var design = path[3];
     var db = $.couch.db(path[1]);
 
+    // set up handlebars helpers
+    Handlebars.registerHelper('render-task', function(task) {
+        var template = Handlebars.compile( $("#render-task").html() );
+        return new Handlebars.SafeString( template(task) );
+    } );
+
     // New Task Form
     $("#new-task").submit( function (e) {
         e.preventDefault();
@@ -63,6 +69,21 @@ $(function() {
             }
         });
     };
+
+    function buildKanbanColumn() {
+        db.view(design + "/tasks-backlog", {
+            success : function (data) {
+                console.log(data);
+//                var col = $.mustache($("#kanban-column").html(), data, {"render-task": $("#render-task").html});
+                data.col_name = "Backlog";
+                var template = Handlebars.compile( $("#kanban-column").html() );
+                
+                $("#backlog-div").html( template(data) );
+            }
+        });
+
+    }
+    buildKanbanColumn();
 //    drawItems();
     var changesRunning = false;
     function setupChanges(since) {

@@ -36,6 +36,12 @@
       </table>
     </form>
     </div>
+    <div id="kanban-board">
+      <div id="backlog-div" class="kanban-column"></div>
+      <div id="doing-div" class="kanban-column"></div>
+      <div id="qa-div" class="kanban-column"></div>
+      <div id="done-div" class="kanban-column"></div>
+    </div>
 
   </body>
   <script src="/_utils/script/sha1.js"></script>
@@ -45,9 +51,30 @@
   <script src="vendor/couchapp/jquery.couchLogin.js"></script>
   <script src="vendor/couchapp/jquery.couchProfile.js"></script>
   <script src="vendor/couchapp/md5.js"></script>
-  <script src="vendor/couchapp/jquery.mustache.js"></script>
+  <!-- <script src="vendor/couchapp/jquery.mustache.js"></script> -->
+  <script src="./script/handlebars-v2.0.0.js"></script>
 
 <!-- templates used by app.js -->
+  <script id="render-task" type="text/x-mustache" charset="utf-8">
+   <div class="task">
+    <h1>{{task}}</h1>
+    <ul>
+    {{#actions}}
+     <li>{{.}}</li>
+    {{/actions}}
+    </ul>
+   </div>
+  </script>
+
+  <script id="kanban-column" type="text/x-mustache" charset="utf-8">
+   <h1>{{ col_name }}</h1>
+   <ul>
+   {{#rows}}
+   <li>{{render-task value}}</li>
+   {{/rows}}
+   </ul>
+  </script>
+
   <script id="new-message" type="text/x-mustache" charset="utf-8">
       <div class="avatar">
         {{#gravatar_url}}<img src="{{gravatar_url}}"/>{{/gravatar_url}}
