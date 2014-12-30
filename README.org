@@ -50,6 +50,7 @@ powerful enough for what I want to do.
 0.5h
 
 ** Add some arrows to get the cards to move from column to column
+   CLOCK: [2014-12-30 Tue 09:05]
    CLOCK: [2014-12-30 Tue 01:01]--[2014-12-30 Tue 01:14] =>  0:13
 1h
 

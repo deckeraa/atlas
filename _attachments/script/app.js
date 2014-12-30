@@ -1,4 +1,3 @@
-// Apache 2.0 J Chris Anderson 2011
 $(function() {   
     // friendly helper http://tinyurl.com/6aow6yn
     $.fn.serializeObject = function() {
@@ -90,7 +89,7 @@ $(function() {
     }
 
     var cols_bf = ["backlog","doing","qa", "done"]; // back-facing
-    var cols_ff = ["Backlog","Doing","Q/A","done"]; // front-facing
+    var cols_ff = ["Backlog","Doing","Q/A","Done"]; // front-facing
 
     function getNextColumn( colname_bf ) {
         var index = cols_bf.indexOf(colname_bf);
