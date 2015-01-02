@@ -61,6 +61,25 @@ function moveTaskToColumn( task_id, col_name ) {
     });
 }
 
+
+function colorTaskByDueDate( task_div_selector ) {
+    var data_html = task_div_selector.find(".due").html();
+    if( data_html ) {
+        var due = new Date( data_html );
+        var now = new Date();
+        // count how many days out
+        // (convert from milliseconds)
+        // 24*60*60*1000
+        var days = (due - now) / 86400000;
+        if(days < 1) {
+            task_div_selector.css('background-color', 'lightpink');
+        }
+        else if (days < 3) {
+            task_div_selector.css('background-color', 'yellow');
+        }
+    }
+}
+
 function appChangesFn(data) {
     console.log("changes: ", data);
 }
@@ -121,7 +140,12 @@ $(function() {
                 data.col_name = col_title;
                 var template = Handlebars.compile( $("#kanban-column").html() );
                 
-                $("#" + colname + "-div").html( template(data) );
+                var col_div = $("#" + colname + "-div");
+                col_div.html( template(data) );
+                var tasks = col_div.find(".task").toArray();
+                for( var i in tasks ) {
+                   colorTaskByDueDate( $(tasks[i]) );
+                }
             }
         });
 
