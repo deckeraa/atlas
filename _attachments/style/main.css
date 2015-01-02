@@ -98,3 +98,35 @@ ul {
     font-size: 1em;
     overflow:hidden
 }
+
+.task .close-button {
+    float: right;
+    width: 25px;
+    height: 25px;
+    background: url("../img/close.png");
+    background-position: 0px -25px;
+}
+
+.task .close-button:hover {
+    float: right;
+    width: 25px;
+    height: 25px;
+    background: url("../img/close.png");
+    background-position: 0px 0px;
+}
+
+.task .close-button-small {
+    float: right;
+    width: 15px;
+    height: 15px;
+    background: url("../img/close_small.png");
+    background-position: 0px -15px;
+}
+
+.task .close-button-small:hover {
+    float: right;
+    width: 15px;
+    height: 15px;
+    background: url("../img/close_small.png");
+    background-position: 0px 0px;
+}
