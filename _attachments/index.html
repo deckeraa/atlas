@@ -2,7 +2,7 @@
 <html>
   <head>
     <title>Example CouchApp</title>
-    <link rel="stylesheet" href="style/main.css" type="text/css">
+    <link rel="stylesheet" type="text/css" href="style/main.css" />
   </head>
   <body>
     <div id="account"></div>
@@ -65,8 +65,8 @@
     {{/actions}}
     </ul>
     <div class="button-bar">
-     <input type="button" onclick="moveTaskToColumn('{{_id}}', 'prev')">left</input>
-     <input type="button" onclick="moveTaskToColumn('{{_id}}', 'next')">right</input>
+     <input class="left-button" type="button" onclick="moveTaskToColumn('{{_id}}', 'prev')"></input>
+     <input class="right-button" type="button" onclick="moveTaskToColumn('{{_id}}', 'next')"></input>
     </div>
    </div>
   </script>
