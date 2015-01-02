@@ -5,6 +5,7 @@
 
 // The database object -- will be initialized on jQuery load
 var db;
+var tasks = {};
 
 // The kanban columns
 var cols_bf = ["backlog","doing","qa", "done"]; // back-facing
@@ -55,17 +56,39 @@ function moveTaskToColumn( task_id, col_name ) {
             if( col == "prev" ) {
                 col = getPrevColumn( doc.column );
             }
-            doc.column = col;
-            db.saveDoc(doc);
+            if( col != null ) {
+                doc.column = col;
+                db.saveDoc(doc);
+            }
         }
     });
 }
 
 
-function colorTaskByDueDate( task_div_selector ) {
+/*function colorTaskByDueDate( task_div_selector ) {
     var data_html = task_div_selector.find(".due").html();
     if( data_html ) {
         var due = new Date( data_html );
+        var now = new Date();
+        // count how many days out
+        // (convert from milliseconds)
+        // 24*60*60*1000
+        var days = (due - now) / 86400000;
+        if(days < 1) {
+            task_div_selector.css('background-color', 'lightpink');
+        }
+        else if (days < 3) {
+            task_div_selector.css('background-color', 'yellow');
+        }
+    }
+}*/
+
+function colorTaskByDueDate( task_id  ) {
+//    var data_html = task_div_selector.find(".due").html();
+    var task = tasks[ task_id ];
+    if( task && task.column != 'done' && task.due ) {
+        var task_div_selector = $("#"+task_id);
+        var due = new Date( task.due );
         var now = new Date();
         // count how many days out
         // (convert from milliseconds)
@@ -131,37 +154,45 @@ $(function() {
     // colname is the name of the corresponding view
     // col_title is what gets displayed to the user
     // example: buildKanbanColumn("backlog", "Backlog");
-    function buildKanbanColumn(colname, col_title) {
-        var this_fn = function(){ buildKanbanColumn(colname,col_title); }; // used for setupChanges
-        db.view(design + "/tasks-" + colname, {
-            update_seq: true,
-            success : function (data) {
-//                setupChanges( data.update_seq );
-                data.col_name = col_title;
-                var template = Handlebars.compile( $("#kanban-column").html() );
-                
-                var col_div = $("#" + colname + "-div");
-                col_div.html( template(data) );
-                var tasks = col_div.find(".task").toArray();
-                for( var i in tasks ) {
-                   colorTaskByDueDate( $(tasks[i]) );
-                }
-            }
-        });
+    function buildKanbanColumn(col_view_data, colname, col_title) {
+        // generate the column via handlebars template in index.html
+        col_view_data.col_name = col_title;
+        var template = Handlebars.compile( $("#kanban-column").html() );
+        var col_div = $("#" + colname + "-div");
+        col_div.html( template(col_view_data) );
 
+        // color the tasks
+        //var tasks = col_div.find(".task").toArray();
+        for( var i in col_view_data.rows ) {
+            colorTaskByDueDate( col_view_data.rows[i].id );
+        }
     }
 
-    for( var i in cols_bf ) {
-        buildKanbanColumn( cols_bf[i], cols_ff[i] );
+    // make a bunch of calls to the views for tasks
+    function reloadAllTasks() {
+        for( var i in cols_bf ) {
+//            $("#"+ cols_bf[i] + "-div").html("");
+            (function () {
+                var col_bf = cols_bf[i];
+                var col_ff = cols_ff[i];
+                db.view(design + "/tasks-" + cols_bf[i], {
+                    update_seq: true,
+                    success : function (col_view_data) {
+                        for( var i in col_view_data.rows) {
+                            tasks[ col_view_data.rows[i].id ] = col_view_data.rows[i].value;
+                        }
+                        buildKanbanColumn( col_view_data, col_bf, col_ff );
+                    }});
+            }());
+        }
     }
-   
+
+    reloadAllTasks();
+
     var changes = db.changes();
     changes.onChange( appChangesFn );
     changes.onChange( function (data) {
-        // TODO not very efficient
-        for( var i in cols_bf ) {
-            buildKanbanColumn( cols_bf[i], cols_ff[i] );
-        }
+        reloadAllTasks();
     });
 
     $("#account").couchLogin({
