@@ -8,8 +8,8 @@ var db;
 var tasks = {};
 
 // The kanban columns
-var cols_bf = ["backlog","doing","qa", "done"]; // back-facing
-var cols_ff = ["Backlog","Doing","Q/A","Done"]; // front-facing
+var cols_bf = ["backlog","waiting","doing","qa", "done"]; // back-facing
+var cols_ff = ["Backlog","Waiting","Doing","Q/A","Done"]; // front-facing
 
 function createUUID() {
     // based off of
