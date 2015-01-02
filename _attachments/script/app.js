@@ -61,31 +61,6 @@ function moveTaskToColumn( task_id, col_name ) {
     });
 }
 
-// TODO add in error checking
-/*function moveTaskToNextColumn( task_id ) {
-    db.openDoc( task_id, {
-        success: function(doc) {
-            var next = getNextColumn( doc.column )
-            if( next ) {
-                doc.column = next;
-                db.saveDoc(doc);
-            }
-        }
-    });
-}
-
-function moveTaskToPrevColumn( task_id ) {
-    db.openDoc( task_id, {
-        success: function(doc) {
-            var prev = getPrevColumn( doc.column )
-            if( prev ) {
-                doc.column = prev;
-                db.saveDoc(doc);
-            }
-        }
-    });
-}*/
-
 function appChangesFn(data) {
     console.log("changes: ", data);
 }
@@ -134,30 +109,6 @@ $(function() {
         return false;
     });
 
-/*    function drawItems() {
-        db.view(design + "/recent-items", {
-            descending : "true",
-            limit : 50,
-            update_seq : true,
-            success : function(data) {
-                setupChanges(data.update_seq);
-                var them = $.mustache($("#recent-messages").html(), {
-                    items : data.rows.map(function(r) {return r.value;})
-                });
-                $("#content").html(them);
-            }
-        });
-    };*/
-
-/*    var changesRunning = false;
-    function setupChanges(since) {
-        if (!changesRunning) {
-            var changeHandler = db.changes(since);
-            changesRunning = true;
-            changeHandler.onChange = function (data) { console.log("changes :",data) };
-        }
-    }*/
-
     // colname is the name of the corresponding view
     // col_title is what gets displayed to the user
     // example: buildKanbanColumn("backlog", "Backlog");
@@ -179,12 +130,6 @@ $(function() {
     for( var i in cols_bf ) {
         buildKanbanColumn( cols_bf[i], cols_ff[i] );
     }
-
-/*    buildKanbanColumn("backlog", "Backlog");
-    buildKanbanColumn("doing", "Doing");
-    buildKanbanColumn("qa", "Q/A");
-    buildKanbanColumn("done", "Done");*/
-
    
     var changes = db.changes();
     changes.onChange( appChangesFn );
@@ -194,17 +139,7 @@ $(function() {
             buildKanbanColumn( cols_bf[i], cols_ff[i] );
         }
     });
-    /*changes.onChange( function(data) { 
-        console.log("changes: ",data);
-    });*/
 
-    /*var promise_changes = db.changes();
-    promise_changes.onChange( db_changes );
-    function db_changes(resp) {
-        console.log("db_changes: ", resp);
-    }*/
-
-//    $.couchProfile.templates.profileReady = $("#new-message").html();
     $("#account").couchLogin({
         loggedIn : function(r) {
             console.log(r);
