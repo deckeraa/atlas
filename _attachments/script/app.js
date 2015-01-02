@@ -157,12 +157,18 @@ $(function() {
     function buildKanbanColumn(col_view_data, colname, col_title) {
         // generate the column via handlebars template in index.html
         col_view_data.col_name = col_title;
-        var template = Handlebars.compile( $("#kanban-column").html() );
+
+        // eliminate old tasks from DOM (avoid duplicate id's)
+        for( var i in col_view_data.rows ){
+            $("#"+col_view_data.rows[i].id).remove();
+        }
+        
+        // build the new column and add to DOM
+        var template = Handlebars.compile($("#kanban-column").html());
         var col_div = $("#" + colname + "-div");
         col_div.html( template(col_view_data) );
 
         // color the tasks
-        //var tasks = col_div.find(".task").toArray();
         for( var i in col_view_data.rows ) {
             colorTaskByDueDate( col_view_data.rows[i].id );
         }
