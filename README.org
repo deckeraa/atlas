@@ -27,6 +27,7 @@ is assumed to have one implicit action.
 1h
 
 *** Write the css for a task
+    CLOCK: [2014-12-30 Tue 19:12]--[2014-12-30 Tue 19:17] =>  0:05
 .25h
 
 ** Get Kanban columns working

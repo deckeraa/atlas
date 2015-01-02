@@ -80,6 +80,7 @@ ul {
 
 .kanban-column {
     display: inline-block;
+    vertical-align: top;
     background-color: lightblue;
     border: 1px solid black;
     margin: 10px 10px 10px 10px;

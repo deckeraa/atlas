@@ -39,8 +39,30 @@ function getPrevColumn( colname_bf ) {
     return null;
 }
 
+// task_id is the _id of the task
+// col_name is the name of the column
+// if col_name is "prev", then the previous column is used.
+// if col_name is "next, then the next column is used.
+// "next" and "previous" are determined off of the column
+// that is stored in the document with the associated _id.
+function moveTaskToColumn( task_id, col_name ) {
+    db.openDoc( task_id, {
+        success: function(doc) {
+            var col = col_name;
+            if( col == "next" ) {
+                col = getNextColumn( doc.column );
+            }
+            if( col == "prev" ) {
+                col = getPrevColumn( doc.column );
+            }
+            doc.column = col;
+            db.saveDoc(doc);
+        }
+    });
+}
+
 // TODO add in error checking
-function moveTaskToNextColumn( task_id ) {
+/*function moveTaskToNextColumn( task_id ) {
     db.openDoc( task_id, {
         success: function(doc) {
             var next = getNextColumn( doc.column )
@@ -62,7 +84,7 @@ function moveTaskToPrevColumn( task_id ) {
             }
         }
     });
-}
+}*/
 
 function appChangesFn(data) {
     console.log("changes: ", data);
